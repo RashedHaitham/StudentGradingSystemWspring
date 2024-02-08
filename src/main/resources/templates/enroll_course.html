@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enroll in a Course</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+        <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <span class="navbar-brand mb-0 h1">Student Grading System</span>
+            </div>
+            <div class="d-flex align-items-center">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <div th:if="${role == 'INSTRUCTOR'}">
+                            <form th:action="@{/instructorLogout}" method="POST">
+                                <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
+                            </form>
+                        </div>
+                        <div th:unless="${role == 'INSTRUCTOR'}">
+                            <form th:action="@{/studentLogout}" method="POST">
+                                <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    <div class="p-5 text-center bg-body-tertiary" style="margin-top: 58px;">
+        <h3 class="mb-3">Courses you can assign yourself</h3>
+    </div>
+</header>
+<div class="container">
+    <div th:if="${not #strings.isEmpty(successMessage)}" class="row justify-content-center">
+    <div class="col-auto">
+        <p class="alert alert-success text-center" th:text="${successMessage}"></p>
+    </div>
+    </div>
+
+    <div th:if="${not #maps.isEmpty(availableCourses)}">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+
+                <table class="table align-middle mb-0 bg-white">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Course ID</th>
+                        <th class="text-center">Course Name</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="course : ${availableCourses}">
+                        <td class="text-center" th:text="${course.key}"></td>
+                        <td class="text-center" th:text="${course.value}"></td>
+                        <td class="text-center">
+                            <form th:action="@{/enrollCourse}" method="POST">
+                                <input type="hidden" name="user_id" th:value="${user_id}" />
+                                <input type="hidden" name="role" th:value="${role}" />
+                                <input type="hidden" name="course_id" th:value="${course.key}" />
+                                <button class="btn btn-primary btn-sm" type="submit">Enroll</button>
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div th:unless="${not #maps.isEmpty(availableCourses)}">
+        <div class="text-center mt-5">
+            <p>There are no courses available for you right now <strong th:text="${username}"></strong>, or you have already enrolled in them.</p>
+        </div>
+    </div>
+
+    <div class="row justify-content-center mt-3">
+        <div class="col-md-4 text-center">
+            <div th:if="${role == 'INSTRUCTOR'}">
+                <form th:action="@{/instructorLogin}" method="GET">
+                    <input type="hidden" name="username" th:value="${username}">
+                    <input type="hidden" name="user_id" th:value="${user_id}">
+                    <button type="submit" class="btn btn-link">Back to Dashboard</button>
+                </form>
+            </div>
+            <div th:unless="${role == 'INSTRUCTOR'}">
+                <form th:action="@{/studentLogin}" method="GET">
+                    <input type="hidden" name="username" th:value="${username}">
+                    <input type="hidden" name="user_id" th:value="${user_id}">
+                    <button type="submit" class="btn btn-link">Back to Dashboard</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</body>
+</html>

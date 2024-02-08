@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Student Dashboard</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+</head>
+<body>
+<header>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container-fluid">
+            <a class="navbar-brand mb-0 h1" href="#">Student Grading System</a>
+            <div class="d-flex align-items-center">
+                <form th:action="@{/logout}" method="POST">
+                    <input type="hidden" name="role" value="STUDENT">
+                    <button type="submit" class="btn btn-link text-black px-3 me-2">Logout</button>
+                </form>
+            </div>
+        </div>
+    </nav>
+    <!-- Welcome message -->
+    <div class="p-5 text-center bg-light">
+        <h3 class="mb-3">Hello <strong th:text="${username}">Username</strong>, welcome to your dashboard.</h3>
+    </div>
+</header>
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <table class="table table-hover border-dark table-bordered table-center">
+                <thead>
+                <tr class="text-center">
+                    <th>Option</th>
+                    <th>Description</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- View Grades -->
+                <tr class="text-center">
+                    <td>
+                        <form th:action="@{/view}" method="GET">
+                            <input type="hidden" name="user_id" th:value="${user_id}">
+                            <input type="hidden" name="role" value="STUDENT">
+                            <button type="submit" class="btn btn-warning">View Grades & Courses</button>
+                        </form>
+                    </td>
+                    <td class="description">
+                        See your performance in all enrolled courses. This includes final grades for each course you're taking.
+                    </td>
+                </tr>
+                <!-- Enroll in Courses -->
+                <tr class="text-center">
+                    <td>
+                        <form th:action="@{/enrollCourse}" method="GET">
+                            <input type="hidden" name="user_id" th:value="${user_id}">
+                            <input type="hidden" name="role" value="STUDENT">
+                            <input type="hidden" name="command" value="LOADC">
+                            <button type="submit" class="btn btn-success">Enroll</button>
+                        </form>
+                    </td>
+                    <td class="description">Explore available courses and enroll in new learning opportunities.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</body>
+</html>

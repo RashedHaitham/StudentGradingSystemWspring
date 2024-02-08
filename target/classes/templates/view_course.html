@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>View Courses</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+</head>
+<body>
+<header>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <span class="navbar-brand mb-0 h1">Student Grading System</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <form th:action="@{/instructorLogout}" method="POST">
+              <input type="radio" name="role" value="INSTRUCTOR" checked style="display:none;">
+              <button type="submit" class="text-black btn btn-link px-3 me-2">
+                Logout
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="p-5 text-center bg-body-tertiary" style="margin-top: 58px;">
+    <h3 class="mb-3">Hello again <strong th:text="${username}"></strong>, here is a list of the courses you are enrolled in. Please proceed with grading or viewing the analysis as required.</h3>
+  </div>
+</header>
+<div class="container">
+  <div class="row">
+    <div class="col-12">
+      <div class="d-flex justify-content-center">
+        <table class="table table-responsive text-center">
+          <thead>
+          <tr>
+            <th>Course ID</th>
+            <th>Course Name</th>
+            <th>Students Count</th>
+            <th>Actions</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="entry : ${courses}">
+            <td th:text="${entry.key}"></td>
+            <td th:text="${entry.value}"></td>
+            <td th:text="${studentsCount[entry.key] != null ? studentsCount[entry.key] : '0'}"></td>
+            <td>
+              <div class="text-center">
+                <span th:if="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">No students</span>
+                <div th:unless="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">
+                  <a th:href="@{/gradeStudent(course_id=${entry.key}, courseName=${entry.value}, user_id=${user_id}, role='INSTRUCTOR')}" class="btn btn-link btn-sm btn-rounded">
+                    Grade Students
+                  </a> |
+                  <a th:href="@{/gradeAnalysis(user_id=${user_id}, role='INSTRUCTOR', course_id=${entry.key}, courseName=${entry.value})}" class="btn btn-link btn-sm btn-rounded">
+                    View Analysis
+                  </a>
+                </div>
+              </div>
+
+            </td>
+          </tr>
+          <tr th:if="${#lists.isEmpty(courses)}">
+            <td colspan="4">There are no courses available.</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-4 text-center">
+      <form th:action="@{/instructorLogin}" method="GET">
+        <input type="hidden" name="username" th:value="${username}">
+        <input type="hidden" name="user_id" th:value="${user_id}">
+        <button type="submit" class="btn btn-link">back to dashboard</button>
+      </form>
+    </div>
+  </div>
+</div>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</body>
+</html>

@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title th:text="'Add Record to ' + ${table}">Add Record</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+</head>
+<body>
+<header>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-body-tertiary">
+    <div class="container-fluid">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <span class="navbar-brand mb-0 h1">Student Grading System</span>
+      </div>
+      <div class="d-flex align-items-center">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <form th:action="@{/adminLogout}" method="GET">
+              <button type="submit" class="text-black btn btn-link px-3 me-2">
+                Logout
+              </button>
+            </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="p-5 text-center bg-body-tertiary" style="margin-top: 58px;">
+    <h3 class="mb-3" th:text="'add new record to ' + ${table}">Add New Record</h3>
+  </div>
+</header>
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div th:if="${not #strings.isEmpty(errorMessage)}" class="row justify-content-center">
+        <div class="col-auto">
+          <p class="alert alert-danger text-center" th:text="${errorMessage}"></p>
+        </div>
+      </div>
+      <div th:if="${not #strings.isEmpty(successMessage)}" class="row justify-content-center">
+        <div class="col-auto">
+          <p class="alert alert-success text-center" th:text="${successMessage}"></p>
+        </div>
+      </div>
+      <div class="justify-content-center mb-3">
+        <form th:action="@{/createRecord}" method="post">
+          <input type="hidden" th:value="${table}" name="table">
+          <div th:if="${table != 'courses'}">
+            <!-- Student or Instructor Form -->
+            <div class="form-outline mb-3">
+              <input class="form-control" type="text" id="userId" name="user_id" required>
+              <label class="form-label" for="userId">Enter User ID</label>
+            </div>
+
+            <div class="form-outline mb-3">
+              <input class="form-control" type="text" id="username" name="username" required>
+              <label class="form-label" for="username">Enter Username</label>
+            </div>
+
+            <div class="form-outline mb-3">
+              <input class="form-control" type="password" id="password" name="password" required>
+              <label class="form-label" for="password">Enter Password</label>
+            </div>
+          </div>
+          <div th:if="${table == 'courses'}">
+            <!-- Course Form -->
+            <div class="form-outline mb-3">
+              <input class="form-control" type="text" id="courseId" name="course_id" required>
+              <label class="form-label" for="courseId">Enter Course ID</label>
+            </div>
+            <div class="form-outline mb-3">
+              <input class="form-control" type="text" id="course_name" name="course_name" required>
+              <label class="form-label" for="course_name">Enter Course Name</label>
+            </div>
+          </div>
+          <button class="btn btn-primary mb-4" type="submit">Add Record</button>
+          <p><a th:href="@{/crud(table=${table})}">back to list</a></p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</html>

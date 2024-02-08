@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Instructor Login Page</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+</head>
+<body>
+<header>
+    <div class="p-5 text-center bg-body-tertiary" style="margin-top: 58px;">
+        <h1 class="mb-3">Instructor Page</h1>
+    </div>
+</header>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <form th:action="@{/instructorLogin}" method="POST">
+                <div class="login-fields">
+                    <div th:if="${errorMessage != null}" class="error-message">
+                        <p class="text-center alert alert-danger" th:text="${errorMessage}"></p>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input class="form-control" id="user_id" name="user_id" type="text" required placeholder="Enter ID"/>
+                        <label class="form-label" for="user_id">Instructor ID:</label>
+                    </div>
+
+                    <div class="form-outline mb-4">
+                        <input class="form-control" id="password" name="password" type="password" placeholder="Enter Password" required/>
+                        <label class="form-label" for="password">Password:</label>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block mb-4">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</html>
