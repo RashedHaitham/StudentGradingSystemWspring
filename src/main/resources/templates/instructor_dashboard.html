@@ -16,7 +16,8 @@
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <form th:action="@{/instructorLogout}" method="GET">
+                        <form th:action="@{/logout}" method="post">
+                            <input type="hidden" name="role" value="INSTRUCTOR">
                             <button type="submit" class="text-black btn btn-link px-3 me-2">
                                 Logout
                             </button>
@@ -41,7 +42,7 @@
                 </tr>
                 <tr>
                     <td class="text-center">
-                        <form th:action="@{/manage}" method="GET">
+                        <form th:action="@{/instructor/manage}" method="GET">
                             <input type="hidden" name="user_id" th:value="${user_id}">
                             <input type="hidden" name ="role" value="INSTRUCTOR">
                             <button class="btn btn-primary" type="submit">Manage Courses</button>

@@ -1,8 +1,12 @@
 package com.example.StudentSystemSpring.Controllers;
 
 import com.example.StudentSystemSpring.Data.DAO;
+import com.example.StudentSystemSpring.Entity.securityUserEntity;
+import com.example.StudentSystemSpring.Repository.UserRepository;
+import com.example.StudentSystemSpring.Service.UserSecurityService;
 import com.example.StudentSystemSpring.Util.PasswordHashing;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,14 +20,22 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminController {
     private final DAO dao;
+    BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    private UserSecurityService userSecurityService;
     @Autowired
-    public AdminController(DAO dao) {
+    public AdminController(DAO dao,UserSecurityService userSecurityService) {
+        this.userSecurityService=userSecurityService;
         this.dao = dao;
     }
 
+    @GetMapping("/admin_dashboard")
+    public String dashboard(){
+        return "admin_dashboard";
+    }
     @GetMapping("/crud")
     public String crud(@RequestParam("table") String table, Model model) {
         List<String> headers = dao.getTableColumns(table);
@@ -93,6 +105,13 @@ public class AdminController {
 
         boolean isAdded = dao.addRecord(table, inputData);
         if (isAdded) {
+            String r;
+            if (columns.get(0).equals("student_id"))
+                r="STUDENT";
+            else r="INSTRUCTOR";
+            securityUserEntity user=new securityUserEntity(userId,passwordEncoder.encode(password),r);
+            System.out.println(user);
+            userSecurityService.saveUser(user);
             model.addAttribute("successMessage", "Record added successfully");
         } else {
             model.addAttribute("errorMessage", "Record wasn't added; an error occurred");
@@ -129,7 +148,7 @@ public class AdminController {
 
         if (newId.equals(idToUpdate)) {
             dao.updateRecord(table, secondaryKeyColumn,primaryKeyColumn, idToUpdate, newUsername);
-            return new ModelAndView("redirect:/crud?role=ADMIN&table=" + table);
+            return new ModelAndView("redirect:/admin/crud?role=ADMIN&table=" + table);
         }
 
         if (dao.isIdExists(newId, table)) {
@@ -139,7 +158,8 @@ public class AdminController {
         boolean isUpdated = dao.updateRecord(table,primaryKeyColumn,primaryKeyColumn, idToUpdate, newId);
 
         if (isUpdated) {
-            mav.setViewName("redirect:/crud?role=ADMIN&table=" + table);
+            userSecurityService.updateUser(idToUpdate,newId);
+            mav.setViewName("redirect:/admin/crud?role=ADMIN&table=" + table);
         } else {
             return forwardWithError("No record was found with the specified ID.", table, name, idToUpdate);
         }
@@ -160,8 +180,8 @@ public class AdminController {
     public String deleteRecordPost(@RequestParam("table") String table,
                                    @RequestParam("id") String idToDelete,
                                    Model model) {
-        System.out.println(table+" "+idToDelete);
-        System.out.println(dao.deleteRecord(table, idToDelete));
+        dao.deleteRecord(table, idToDelete);
+        userSecurityService.deleteById(idToDelete);
         return crud(table,model);
     }
 }

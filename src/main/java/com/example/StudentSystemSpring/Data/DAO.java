@@ -3,6 +3,8 @@ package com.example.StudentSystemSpring.Data;
 import com.example.StudentSystemSpring.Model.CourseGrade;
 import com.example.StudentSystemSpring.Model.Role;
 import com.example.StudentSystemSpring.Model.StudentGrades;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import org.springframework.stereotype.Service;
 import java.sql.*;
 import java.util.*;
@@ -173,6 +175,7 @@ public class DAO {
         List<CourseGrade> courseGrades = new ArrayList<>();
         String studentName = "";
         try {
+
             String query = "SELECT students.username AS student_name, courses.course_id, courses.course_name, grades.grade " +
                     "FROM students " +
                     "JOIN grades ON students.student_id = grades.student_id " +
@@ -290,22 +293,6 @@ public class DAO {
         return false;
     }
 
-    /*public boolean updateRecord(String tableName, String columnToUpdate,
-                                String primaryKeyColumn, String idToUpdate, String newValue) {
-        String query = "UPDATE " + tableName + " SET " + columnToUpdate + " = ? WHERE " + primaryKeyColumn + " = ?";
-        System.out.println(tableName);
-        System.out.println(columnToUpdate);
-        System.out.println(primaryKeyColumn);
-        System.out.println(query);
-        try {
-            int rowsUpdated = executeUpdate(query, newValue, idToUpdate);
-            return rowsUpdated > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }*/
-
     public boolean updateRecord(String tableName, String columnToUpdate,
                                 String primaryKeyColumn, String idToUpdate, String newValue) {
 
@@ -325,7 +312,7 @@ public class DAO {
         String updateQuery = "UPDATE " + tableName + " SET " + columnToUpdate + " = ? WHERE " + primaryKeyColumn + " = ?";
 
 // Assuming we have a method that returns a Map of related tables and their respective foreign key columns
-        Map<String, String> relatedTables = getRelatedTables(tableName, primaryKeyColumn);
+        Map<String, String> relatedTables = getRelatedTables(tableName);
 
         Connection connection = null;
         try {
@@ -381,7 +368,7 @@ public class DAO {
     }
 
     //Stub for getting related tables and foreign key columns
-    private Map<String, String> getRelatedTables(String tableName, String primaryKeyColumn) {
+    private Map<String, String> getRelatedTables(String tableName) {
         Map<String, String> relatedTables = new HashMap<>();
 
         // Determine the related tables and foreign keys based on the table name

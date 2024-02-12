@@ -1,6 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"><head>
     <meta charset="UTF-8">
     <title>View Courses</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
@@ -18,7 +18,7 @@
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <form th:action="@{/logout}" method="POST">
-                            <input type="radio" name="role" value="INSTRUCTOR" checked style="display:none;">
+                            <input type="radio" name="role" value="STUDENT" checked style="display:none;">
                             <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
                         </form>
                     </li>
@@ -47,17 +47,16 @@
                         <td th:text="${course.key}">Course ID</td>
                         <td th:text="${course.value}">Course Name</td>
                         <td>
-            <span th:each="courseGrade : ${studentGrades.courseGrades}"
-                  th:if="${courseGrade.courseId == course.key}"
-                  th:class="|badge ${courseGrade.grade >= 50 ? 'badge-success' : 'badge-danger'} rounded-pill d-inline|"
-                  th:text="${courseGrade.grade}">
-            </span>
                             <span th:each="courseGrade : ${studentGrades.courseGrades}"
+                                  th:if="${courseGrade.courseId == course.key}"
+                                  th:class="|badge ${courseGrade.grade >= 50 ? 'badge-success' : 'badge-danger'} rounded-pill d-inline|"
+                                  th:text="${courseGrade.grade}">
+                            </span>
+                           <!-- <span th:each="courseGrade : ${studentGrades.courseGrades}"
                                   th:unless="${courseGrade.courseId == course.key}"
                                   class="badge-secondary badge rounded-pill d-inline"
                                   >Not Graded
-            </span>
-
+                            </span> -->
                         </td>
                     </tr>
                     </tbody>
@@ -68,7 +67,7 @@
     </div>
     <div class="row justify-content-center">
         <div class="col-md-4 text-center">
-            <form th:action="@{/studentLogin}" method="GET">
+            <form th:action="@{/student/student_dashboard}" method="GET">
                 <input type="hidden" name="username" th:value="${username}">
                 <input type="hidden" name="user_id" th:value="${user_id}">
                 <button type="submit" class="btn btn-link">back to dashboard</button>

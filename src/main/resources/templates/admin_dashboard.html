@@ -16,7 +16,8 @@
       <div class="d-flex align-items-center">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <form th:action="@{/adminLogout}" method="GET">
+            <form th:action="@{/logout}" method="post">
+              <input type="hidden" name="role" value="ADMIN">
               <button type="submit" class="text-black btn btn-link px-3 me-2">
                 Logout
               </button>
@@ -41,7 +42,7 @@
         </tr>
         <tr>
           <td class="text-center">
-            <form th:action="@{/crud}" method="GET">
+            <form th:action="@{/admin/crud}" method="GET">
               <input type="hidden" name="role" value="ADMIN">
               <input type="hidden" name="table" value="students">
               <button class="btn btn-primary" type="submit">Students</button>
@@ -51,7 +52,7 @@
         </tr>
         <tr>
           <td class="text-center">
-            <form th:action="@{/crud}" method="GET">
+            <form th:action="@{/admin/crud}" method="GET">
               <input type="hidden" name="role" value="ADMIN">
               <input type="hidden" name="table" value="instructors">
               <button class="btn btn-warning" type="submit">Instructors</button>
@@ -61,7 +62,7 @@
         </tr>
         <tr>
           <td class="text-center">
-            <form th:action="@{/crud}" method="GET">
+            <form th:action="@{/admin/crud}" method="GET">
               <input type="hidden" name="role" value="ADMIN">
               <input type="hidden" name="table" value="courses">
               <button class="btn btn-success" type="submit">Courses</button>

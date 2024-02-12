@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <title>Grade Analysis</title>
-  <link rel="stylesheet" href="css/bootstrap.css">
-  <link rel="stylesheet" href="css/mdb.min.css">
+  <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+  <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
@@ -16,7 +16,8 @@
     <div class="container-fluid">
       <span class="navbar-brand mb-0 h1">Student Grading System</span>
       <div class="d-flex align-items-center">
-        <form th:action="@{/instructorLogout}" method="GET">
+        <form th:action="@{/logout}" method="post">
+          <input type="hidden" name="role" value="INSTRUCTOR">
           <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
         </form>
       </div>
@@ -40,7 +41,7 @@
       <canvas id="myChart" width="400" height="200"></canvas>
     </div>
 
-    <form th:action="@{/manage}" method="get" class="text-center mt-3">
+    <form th:action="@{/instructor/manage}" method="get" class="text-center mt-3">
       <input type="hidden" name="role" value="INSTRUCTOR">
       <input type="hidden" name="username" th:value="${username}">
       <input type="hidden" name="user_id" th:value="${user_id}">

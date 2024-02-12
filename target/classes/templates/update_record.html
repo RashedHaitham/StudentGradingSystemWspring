@@ -18,7 +18,7 @@
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <form th:action="@{/logout}" method="GET">
+                        <form th:action="@{/logout}" method="post">
                             <input type="hidden" name="role" value="ADMIN" checked style="display:none;">
                             <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
                         </form>
@@ -35,7 +35,7 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-6">
-            <form th:action="@{/updateRecord}" method="post">
+            <form th:action="@{/admin/updateRecord}" method="post">
 
                 <div th:if="${errorMessage}" class="text-center alert alert-danger" th:text="${errorMessage}"></div>
 
@@ -55,7 +55,7 @@
                 </div>
 
                 <button class="btn btn-warning mb-4" type="submit" th:text="'Save changes for ' + ${username}">Save Changes</button>
-                <p><a th:href="@{/crud(table=${table})}">back to list</a></p>
+                <p><a th:href="@{/admin/crud(table=${table})}">back to list</a></p>
 
             </form>
         </div>

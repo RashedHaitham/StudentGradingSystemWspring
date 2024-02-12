@@ -17,7 +17,7 @@
       <div class="d-flex align-items-center">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <form th:action="@{/instructorLogout}" method="POST">
+            <form th:action="@{/logout}" method="POST">
               <input type="radio" name="role" value="INSTRUCTOR" checked style="display:none;">
               <button type="submit" class="text-black btn btn-link px-3 me-2">
                 Logout
@@ -54,10 +54,10 @@
               <div class="text-center">
                 <span th:if="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">No students</span>
                 <div th:unless="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">
-                  <a th:href="@{/gradeStudent(course_id=${entry.key}, courseName=${entry.value}, user_id=${user_id}, role='INSTRUCTOR')}" class="btn btn-link btn-sm btn-rounded">
+                  <a th:href="@{/instructor/gradeStudent(course_id=${entry.key}, courseName=${entry.value}, user_id=${user_id}, role='INSTRUCTOR')}" class="btn btn-link btn-sm btn-rounded">
                     Grade Students
                   </a> |
-                  <a th:href="@{/gradeAnalysis(user_id=${user_id}, role='INSTRUCTOR', course_id=${entry.key}, courseName=${entry.value})}" class="btn btn-link btn-sm btn-rounded">
+                  <a th:href="@{/instructor/gradeAnalysis(user_id=${user_id}, role='INSTRUCTOR', course_id=${entry.key}, courseName=${entry.value})}" class="btn btn-link btn-sm btn-rounded">
                     View Analysis
                   </a>
                 </div>
@@ -75,7 +75,7 @@
   </div>
   <div class="row justify-content-center">
     <div class="col-md-4 text-center">
-      <form th:action="@{/instructorLogin}" method="GET">
+      <form th:action="@{/instructor/instructor_dashboard}" method="GET">
         <input type="hidden" name="username" th:value="${username}">
         <input type="hidden" name="user_id" th:value="${user_id}">
         <button type="submit" class="btn btn-link">back to dashboard</button>

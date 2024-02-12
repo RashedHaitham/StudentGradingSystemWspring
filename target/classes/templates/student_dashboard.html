@@ -19,7 +19,6 @@
             </div>
         </div>
     </nav>
-    <!-- Welcome message -->
     <div class="p-5 text-center bg-light">
         <h3 class="mb-3">Hello <strong th:text="${username}">Username</strong>, welcome to your dashboard.</h3>
     </div>
@@ -35,10 +34,9 @@
                 </tr>
                 </thead>
                 <tbody>
-                <!-- View Grades -->
                 <tr class="text-center">
                     <td>
-                        <form th:action="@{/view}" method="GET">
+                        <form th:action="@{/student/view}" method="get">
                             <input type="hidden" name="user_id" th:value="${user_id}">
                             <input type="hidden" name="role" value="STUDENT">
                             <button type="submit" class="btn btn-warning">View Grades & Courses</button>
@@ -48,13 +46,11 @@
                         See your performance in all enrolled courses. This includes final grades for each course you're taking.
                     </td>
                 </tr>
-                <!-- Enroll in Courses -->
                 <tr class="text-center">
                     <td>
                         <form th:action="@{/enrollCourse}" method="GET">
                             <input type="hidden" name="user_id" th:value="${user_id}">
                             <input type="hidden" name="role" value="STUDENT">
-                            <input type="hidden" name="command" value="LOADC">
                             <button type="submit" class="btn btn-success">Enroll</button>
                         </form>
                     </td>

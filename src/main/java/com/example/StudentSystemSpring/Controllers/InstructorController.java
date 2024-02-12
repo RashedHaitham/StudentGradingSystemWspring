@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.StudentSystemSpring.Model.StudentGrades;
@@ -15,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
+@RequestMapping("instructor")
 public class InstructorController {
     private final DAO dao;
 
@@ -22,7 +24,13 @@ public class InstructorController {
     public InstructorController(DAO dao) {
         this.dao = dao;
     }
-
+    @GetMapping("/instructor_dashboard")
+    public String dashboard(@RequestParam("username") String username,
+            @RequestParam("user_id") String user_id,Model model){
+        model.addAttribute("username",username);
+        model.addAttribute("user_id",user_id);
+        return "instructor_dashboard";
+    }
     @GetMapping("/manage")
     public String showCourses(@RequestParam("user_id") String user_id,
                               @RequestParam("role") String Therole,
@@ -35,18 +43,9 @@ public class InstructorController {
 
         Map<Integer, String> courses = dao.viewCourses(userId, role);
         model.addAttribute("courses",courses);
-        // if it is instructor get the student count for each course
-        if (role == Role.INSTRUCTOR) {
-            Map<Integer, Integer> studentsCount = dao.getStudentCountForCourses();
-            model.addAttribute("studentsCount", studentsCount);
-            return "view_course";
-        }
-        else {
-            StudentGrades studentGrades = dao.viewGrades(userId);
-            model.addAttribute("username", dao.getDbUsername(role, userId));
-            model.addAttribute("studentGrades", studentGrades);
-            return "view_courses_student";
-        }
+        Map<Integer, Integer> studentsCount = dao.getStudentCountForCourses();
+        model.addAttribute("studentsCount", studentsCount);
+        return "view_course";
     }
 
     @GetMapping("/gradeStudent")
@@ -95,7 +94,7 @@ public class InstructorController {
         redirectAttributes.addAttribute("user_id", userId);
         redirectAttributes.addAttribute("role", role);
         redirectAttributes.addAttribute("course_id", courseId);
-        return "redirect:/gradeStudent";
+        return "redirect:/instructor/gradeStudent";
     }
 
     @GetMapping("/gradeAnalysis")

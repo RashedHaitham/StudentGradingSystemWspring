@@ -17,16 +17,9 @@
             <div class="d-flex align-items-center">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <div th:if="${role == 'INSTRUCTOR'}">
-                            <form th:action="@{/instructorLogout}" method="POST">
-                                <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
-                            </form>
-                        </div>
-                        <div th:unless="${role == 'INSTRUCTOR'}">
-                            <form th:action="@{/studentLogout}" method="POST">
-                                <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
-                            </form>
-                        </div>
+                        <form th:action="@{/logout}" method="POST">
+                            <button type="submit" class="text-black btn btn-link px-3 me-2">Logout</button>
+                        </form>
                     </li>
                 </ul>
             </div>
@@ -82,14 +75,14 @@
     <div class="row justify-content-center mt-3">
         <div class="col-md-4 text-center">
             <div th:if="${role == 'INSTRUCTOR'}">
-                <form th:action="@{/instructorLogin}" method="GET">
+                <form th:action="@{/instructor/instructor_dashboard}" method="GET">
                     <input type="hidden" name="username" th:value="${username}">
                     <input type="hidden" name="user_id" th:value="${user_id}">
                     <button type="submit" class="btn btn-link">Back to Dashboard</button>
                 </form>
             </div>
             <div th:unless="${role == 'INSTRUCTOR'}">
-                <form th:action="@{/studentLogin}" method="GET">
+                <form th:action="@{/student/student_dashboard}" method="GET">
                     <input type="hidden" name="username" th:value="${username}">
                     <input type="hidden" name="user_id" th:value="${user_id}">
                     <button type="submit" class="btn btn-link">Back to Dashboard</button>

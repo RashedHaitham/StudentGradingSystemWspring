@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" th:href="@{/css/mdb.min.css}">
+    <style>
+        .btn-check:checked + label {
+            background-color: #3B71CA !important;
+            color: white !important;
+        }
+        .btn-check:checked + label:hover {
+            background-color: #0b5ed7 !important;
+        }
+    </style>
+</head>
+<body>
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 100vh;">
+    <div class="card shadow-5-strong" style="max-width: 400px; width: 100%;">
+        <div class="card-body p-5">
+            <h2 class="text-center mb-5">Login</h2>
+            <form th:action="@{/login}" method="POST">
+                    <div th:if="${param.error}">
+                        <p th:text="${param.message}" class="text-center alert alert-danger">Invalid username or password</p>
+                    </div>
+                <div class="form-outline mb-4">
+                    <input type="radio" id="student" name="role" value="STUDENT" checked class="btn-check" autocomplete="off">
+                    <label for="student" class="btn btn-outline-primary me-2">Student</label>
+
+                    <input type="radio" id="instructor" name="role" value="INSTRUCTOR" class="btn-check" autocomplete="off">
+                    <label for="instructor" class="btn btn-outline-primary">Instructor</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input type="text" id="username" name="username" required placeholder="Enter ID" class="form-control form-control-lg" />
+                    <label class="form-label" for="username">User ID</label>
+                </div>
+
+                <div class="form-outline mb-4">
+                    <input type="password" id="password" name="password" required placeholder="Enter Password" class="form-control form-control-lg" />
+                    <label class="form-label" for="password">Password</label>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-lg btn-block">Login</button>
+            </form>
+        </div>
+    </div>
+</div>
+<script th:src="@{/js/bootstrap.js}"></script>
+<script th:src="@{/js/mdb.min.js}"></script>
+</body>
+</html>
