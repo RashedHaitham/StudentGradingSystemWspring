@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.example.StudentSystemSpring.Model.StudentGrades;
 
@@ -96,6 +97,33 @@ public class InstructorController {
         redirectAttributes.addAttribute("course_id", courseId);
         return "redirect:/instructor/gradeStudent";
     }
+
+    @PostMapping("/deleteGrade")
+    public String deleteGrade(@RequestParam("std_id") String stdId,
+                              @RequestParam("courseId") String courseId,
+                              @RequestParam("user_id") String userId,
+                              RedirectAttributes redirectAttributes) {
+        dao.deleteGrade(stdId, courseId);
+        redirectAttributes.addFlashAttribute("message", "Successfully Deleted the Grade!");
+
+        redirectAttributes.addAttribute("user_id", userId);
+        redirectAttributes.addAttribute("role", Role.INSTRUCTOR.name()); // Assuming Role.INSTRUCTOR is an enum
+
+        return "redirect:/instructor/gradeStudent";
+    }
+
+    @PostMapping("/dropCourse")
+    public String dropCourse(@RequestParam("user_id") String userId,
+                             @RequestParam("courseId") String courseId,
+                             @RequestParam("role") String role,
+                             RedirectAttributes redirectAttributes) {
+        dao.dropEnrolledCourse(userId, courseId, role);
+        redirectAttributes.addFlashAttribute("message", "Successfully Dropped the course!");
+        redirectAttributes.addAttribute("user_id", userId); // These will be added as query parameters
+        redirectAttributes.addAttribute("role", "INSTRUCTOR");
+        return "redirect:/instructor/manage";
+    }
+
 
     @GetMapping("/gradeAnalysis")
     public String showGradeAnalysisPage(

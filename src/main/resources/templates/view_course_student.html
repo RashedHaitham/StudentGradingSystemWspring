@@ -33,6 +33,11 @@
 <div class="container">
     <div class="row">
         <div class="col-12">
+            <div th:if="${not #strings.isEmpty(message)}" class="row justify-content-center">
+                <div class="col-auto">
+                    <p class="alert alert-success text-center" th:text="${message}"></p>
+                </div>
+            </div>
             <div class="d-flex justify-content-center">
                 <table class="table align-middle mb-0 bg-white">
                     <thead class="bg-light">
@@ -52,11 +57,20 @@
                                   th:class="|badge ${courseGrade.grade >= 50 ? 'badge-success' : 'badge-danger'} rounded-pill d-inline|"
                                   th:text="${courseGrade.grade}">
                             </span>
-                           <!-- <span th:each="courseGrade : ${studentGrades.courseGrades}"
-                                  th:unless="${courseGrade.courseId == course.key}"
-                                  class="badge-secondary badge rounded-pill d-inline"
-                                  >Not Graded
-                            </span> -->
+                            <div th:each="courseGrade : ${studentGrades.courseGrades}"
+                                 th:unless="${courseGrade.courseId == course.key}">
+                                <span class="badge-secondary badge rounded-pill d-inline">
+                                    Not Graded
+                                  </span>
+                                <form th:action="@{/student/dropCourse}" method="post" style="display: inline;">
+                                      <input type="hidden" name="user_id" th:value="${user_id}" />
+                                      <input type="hidden" name="role" value="STUDENT" />
+                                      <input type="hidden" name="courseId" th:value="${course.key}" />
+                                      <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                                         Drop
+                                      </button>
+                                </form>
+                            </div>
                         </td>
                     </tr>
                     </tbody>

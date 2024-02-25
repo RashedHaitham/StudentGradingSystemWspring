@@ -35,6 +35,11 @@
 <div class="container">
   <div class="row">
     <div class="col-12">
+      <div th:if="${not #strings.isEmpty(message)}" class="row justify-content-center">
+        <div class="col-auto">
+          <p class="alert alert-success text-center" th:text="${message}"></p>
+        </div>
+      </div>
       <div class="d-flex justify-content-center">
         <table class="table table-responsive text-center">
           <thead>
@@ -53,14 +58,23 @@
             <td>
               <div class="text-center">
                 <span th:if="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">No students</span>
-                <div th:unless="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">
+                <span th:unless="${studentsCount[entry.key] == null or studentsCount[entry.key] == 0}">
                   <a th:href="@{/instructor/gradeStudent(course_id=${entry.key}, courseName=${entry.value}, user_id=${user_id}, role='INSTRUCTOR')}" class="btn btn-link btn-sm btn-rounded">
                     Grade Students
                   </a> |
                   <a th:href="@{/instructor/gradeAnalysis(user_id=${user_id}, role='INSTRUCTOR', course_id=${entry.key}, courseName=${entry.value})}" class="btn btn-link btn-sm btn-rounded">
                     View Analysis
                   </a>
-                </div>
+                </span> |
+                <form th:action="@{/instructor/dropCourse}" method="post" style="display: inline;">
+                  <input type="hidden" name="user_id" th:value="${user_id}" />
+                  <input type="hidden" name="role" value="INSTRUCTOR" />
+                  <input type="hidden" name="courseId" th:value="${entry.key}" />
+                  <button type="submit" class="btn btn-link btn-sm btn-rounded">
+                    Drop
+                  </button>
+                </form>
+
               </div>
 
             </td>
