@@ -20,9 +20,7 @@ public class SecurityConfig {
     private final UserDetailsService customUserDetailsService;
     private final DAO dao;
     private final PasswordEncoder passwordEncoder;
-
-    private CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
-
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
 
     @Autowired
     @Lazy
@@ -33,7 +31,6 @@ public class SecurityConfig {
         this.passwordEncoder = passwordEncoder;
         this.customAuthenticationFailureHandler=customAuthenticationFailureHandler;
     }
-
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -66,7 +63,6 @@ public class SecurityConfig {
                         .anyRequest().authenticated())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .accessDeniedPage("/403"));
-
         return http.build();
     }
     @Bean
